@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8" />
+    <title>SQL Query</title>
+    <style>
+        body{font-family:sans-serif;width:420px;padding:10px}
+        textarea{width:100%;height:100px}
+        table{border-collapse:collapse;width:100%;margin-top:10px}
+        th,td{border:1px solid #ccc;padding:4px 6px;font-size:12px}
+        #msg{color:red;margin-top:10px}
+    </style>
+</head>
+<body>
+<textarea id="query" placeholder="SELECT * FROM transfers LIMIT 10;"></textarea>
+<button id="runBtn">Wykonaj</button>
+<div id="msg"></div>
+<div id="result"></div>
+
+<script src="sql-wasm.js"></script> <!-- wprowadza globalne initSqlJs -->
+<script src="popup.js"></script>
+</body>
+</html>

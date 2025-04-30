@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8" />
+    <title>Importuj bazę danych</title>
+    <style>
+        body{font-family:sans-serif;margin:20px}
+        #status{margin-top:10px;color:green}
+    </style>
+</head>
+<body>
+<h1>Import bazy do OPFS</h1>
+<h2>Baze danych pobierasz i aktualizujesz z <a href="https://sokker.org/forum_topic/ID_forum/1/ID_topic/3564459/pg/1">klik</a></h2>
+<p>Bez wcześniejszej pracy: <a href="https://sokker.org/pl/app/team/16334/">Mikos</a> i <a href="https://sokker.org/pl/app/team/52153/">Geston</a> nie było by tego </p>
+
+<button id="pick">Wybierz bazę…</button>
+<div id="status"></div>
+
+<!-- sql-js (UMD) wprowadza globalną funkcję initSqlJs -->
+<script src="sql-wasm.js"></script>
+<script src="options.js"></script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "Advence Transfer Analyzer",
+  "description": "Dodaj do Sokker.org narzędzie do analizy transferów",
+  "version": "2.1.0",
+  "permissions": ["storage", "unlimitedStorage"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "SQL Query",
+    "default_popup": "popup.html"
+  },
+  "options_page": "options.html",
+  "content_scripts": [
+    {
+      "matches": ["https://sokker.org/player/PID/*"],
+      "js": ["helper/sqlQueryRunner.js","helper/extractDataFromPage.js", "similarTransfers.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://sokker.org/transfers_player/ID_human/*"],
+      "js": ["helper/sqlQueryRunner.js","helper/extractDataFromPage.js","skillHistory.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    { "resources": ["sql-wasm.wasm"], "matches": ["<all_urls>"] }
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
+  }
+}
