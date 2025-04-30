@@ -142,7 +142,7 @@ function fixColspanForFooter() {
         if (td) {
             const current = parseInt(td.getAttribute('colspan'), 10);
             if (current === 4) {
-                td.setAttribute('colspan', '7');
+                td.setAttribute('colspan', '8');
             }
         }
     }
@@ -156,6 +156,12 @@ async function main() {
         const pid = extractPid(pidRaw);
         try {
             const transferList = await runSQL(`SELECT * FROM transfers_with_sumskills_pln WHERE pid = ${pid} and price_pln is not null ORDER BY transfer_date DESC`);
+
+            if (!transferList || !transferList.values || transferList.values.length === 0) {
+                console.error('Brak danych transferów.');
+                return;
+            }
+
             const playerData = mapSQLResult(transferList);
             console.log(playerData);
             modifyTableHeader();
