@@ -3,7 +3,15 @@
   "name": "Advence Transfer Analyzer",
   "description": "Dodaj do Sokker.org narzędzie do analizy transferów",
   "version": "2.1.0",
+
   "permissions": ["storage", "unlimitedStorage"],
+
+  "host_permissions": [
+    "https://sktables.org/*",       // Zmienione/Dodane: to jest właściwa domena blokowana przez CORS
+    "https://www.sktables.org/*",   // Opcjonalnie: zostaw, jeśli jest potrzebne
+    "https://sokker.org/*"
+  ],
+
   "background": {
     "service_worker": "background.js"
   },
@@ -21,6 +29,11 @@
     {
       "matches": ["https://sokker.org/transfers_player/ID_human/*"],
       "js": ["helper/sqlQueryRunner.js","helper/extractDataFromPage.js","skillHistory.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://sokker.org/juniors/teamID/*"],
+      "js": ["helper/sqlQueryRunner.js","helper/extractDataFromPage.js","juniorTable.js"],
       "run_at": "document_idle"
     }
   ],
