@@ -1,5 +1,41 @@
 
 
+function renderSubskillEstimate(panelEl, playerData) {
+    if (!panelEl || !playerData) return;
+
+    const liNodes = [...panelEl.querySelectorAll('ul.list-unstyled li')];
+    const heightLi = liNodes.find(li => li.textContent.includes('wzrost'));
+    if (!heightLi) return;
+
+    // Usuwamy ewentualne poprzednie wstawienie (np. przy ponownym uruchomieniu skryptu).
+    panelEl.querySelectorAll('.subskill-estimate').forEach(el => el.remove());
+
+    const form = playerData.form ? playerData.form.number : null;
+    const result = estimateSubskill(playerData.skills, form, playerData.valuePln);
+
+    if (result.error && result.avgSubskill == null) {
+        const errorLi = document.createElement('li');
+        errorLi.classList.add('subskill-estimate');
+        errorLi.innerHTML = `<span class="text-muted">Subskill: ${result.error}</span>`;
+        heightLi.insertAdjacentElement('afterend', errorLi);
+        return;
+    }
+
+    const avgLi = document.createElement('li');
+    avgLi.classList.add('subskill-estimate');
+    avgLi.title = `wartość min: ${result.minVal} zł, śr.: ${result.avgVal} zł, maks: ${result.maxVal} zł`;
+    avgLi.innerHTML = `Expected average subskill: <strong>${result.avgSubskill.toFixed(3)}</strong>`;
+    heightLi.insertAdjacentElement('afterend', avgLi);
+
+    if (result.intervalMin !== null && result.intervalMax !== null) {
+        const intervalLi = document.createElement('li');
+        intervalLi.classList.add('subskill-estimate');
+        intervalLi.title = 'Zależy od nieznanej części dziesiętnej formy';
+        intervalLi.innerHTML = `Possible average subskill: <strong>${result.intervalMin.toFixed(3)} - ${result.intervalMax.toFixed(3)}</strong>`;
+        avgLi.insertAdjacentElement('afterend', intervalLi);
+    }
+}
+
 function fillRow(rowId, dataObj) {
     Object.entries(dataObj).forEach(([key, val]) => {
         const cell = document.querySelector(`#${rowId} td[data-key="${key}"]`);
@@ -592,6 +628,8 @@ window.runSQL = runSQL;
 const panel = document.querySelector('.panel.panel-default');
 
 const playerData = extractPlayerData(panel);
+
+renderSubskillEstimate(panel, playerData);
 
 if (playerData.skills.length !== 0) {
 

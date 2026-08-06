@@ -74,6 +74,37 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         return true; // KEEP PORT OPEN
     }
 
+    if (msg.action === "getMyTeamValue") {
+        console.log("getMyTeamValue - Fetching HTML");
+
+        (async () => {
+            try {
+                const url = 'https://www.sktables.org/myteam/value';
+                const res = await fetch(url, {
+                    method: "GET",
+                    headers: { "accept": "text/html" }
+                });
+
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
+
+                const html = await res.text();
+
+                sendResponse({
+                    ok: true,
+                    html: html
+                });
+
+            } catch (e) {
+                console.error("[BG] getMyTeamValue ERROR:", e);
+                sendResponse({ ok: false, error: e.toString() });
+            }
+        })();
+
+        return true; // KEEP PORT OPEN
+    }
+
     // ==========================
     // 2) SQL queries
     // ==========================
