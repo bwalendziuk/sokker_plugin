@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Advence Transfer Analyzer",
   "description": "Dodaj do Sokker.org narzędzie do analizy transferów",
-  "version": "2.1.0",
+  "version": "2.5.2",
 
   "permissions": ["storage", "unlimitedStorage"],
 
@@ -29,6 +29,11 @@
     {
       "matches": ["https://sokker.org/player/PID/*"],
       "js": ["helper/sqlQueryRunner.js","helper/extractDataFromPage.js", "helper/subskillEstimate.js", "similarTransfers.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://sokker.org/pl/app/training/player-info/*"],
+      "js": ["helper/subskillEstimate.js", "trainingPlayerInfo.js", "helper/trainingComparisonApi.js", "helper/alignReportsByAge.js", "trainingComparison.js"],
       "run_at": "document_idle"
     },
     {
