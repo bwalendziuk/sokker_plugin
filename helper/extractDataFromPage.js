@@ -15,8 +15,14 @@ function extractPlayerData(panelEl) {
     const clubLink = panelEl.querySelector('a[href^="app/team/"]');
     const countryLink = panelEl.querySelector('a[href^="country/ID_country/"]');
 
-    const valueSpan = [...panelEl.querySelectorAll('span.text-success')]
-        .find(s => s.textContent.includes('zł'));
+    const liNodes = [...panelEl.querySelectorAll('ul.list-unstyled li')];
+
+    // Kolor napisu z wartością zależy od kontekstu (text-success / text-danger dla skrajnych
+    // wartości), więc zamiast po klasie szukamy po treści wiersza "wartość".
+    const valueLi = liNodes.find(li => li.textContent.includes('wartość'));
+    const valueSpan = valueLi ? [...valueLi.querySelectorAll('span')].find(s => s.textContent.includes('zł')) : null;
+    const valueMatch = valueLi ? valueLi.textContent.match(/([\d\s ]+)\s*zł/) : null;
+    const valuePln = valueMatch ? Number(valueMatch[1].replace(/[\s ]/g, '')) : null;
 
     const wageMatch = panelEl.innerText.match(/wynagrodzenie:\s*([\d\s]+) zł/);
 
@@ -24,8 +30,6 @@ function extractPlayerData(panelEl) {
         /wzrost:\s*(\d+).*?cm.*,?\s*waga:\s*([\d.]+).*?kg.*,?\s*BMI:\s*([\d.]+)/
     );
 
-
-    const liNodes = [...panelEl.querySelectorAll('ul.list-unstyled li')];
     const formLi = liNodes.find(li => li.textContent.includes('forma'));
     const discLi = liNodes.find(li => li.textContent.includes('dyscyplina taktyczna'));
 
@@ -63,6 +67,7 @@ function extractPlayerData(panelEl) {
         } : null,
 
         value: valueSpan ? valueSpan.textContent.trim() : null,
+        valuePln: valuePln,
         wage: wageMatch ? wageMatch[1].replace(/\s/g, '') : null,
 
         form: getSkillInfo(formLi),

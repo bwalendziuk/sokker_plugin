@@ -22,8 +22,13 @@
   "options_page": "options.html",
   "content_scripts": [
     {
+        "matches": ["https://sokker.org/pl/app/squad/"],
+        "js": ["helper/sqlQueryRunner.js","helper/extractDataFromPage.js", "teamValue.js"],
+        "run_at": "document_idle"
+    },
+    {
       "matches": ["https://sokker.org/player/PID/*"],
-      "js": ["helper/sqlQueryRunner.js","helper/extractDataFromPage.js", "similarTransfers.js"],
+      "js": ["helper/sqlQueryRunner.js","helper/extractDataFromPage.js", "helper/subskillEstimate.js", "similarTransfers.js"],
       "run_at": "document_idle"
     },
     {
@@ -44,3 +49,4 @@
     "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
   }
 }
+
